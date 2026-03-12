@@ -1,0 +1,29 @@
+name: Ejecutar pruebas con Maven
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v2
+
+      - name: Configurar JDK
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+
+      - name: Compilar y ejecutar pruebas
+        run: mvn clean verify
+
+      - name: Guardar reportes Serenity
+        uses: actions/upload-artifact@v2
+        with:
+          name: serenity-report
+          path: target/site/serenity
